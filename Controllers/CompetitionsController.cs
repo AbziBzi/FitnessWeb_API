@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using FitnessWeb_API.Domain.Models;
-using FitnessWeb_API.Domain.Services;
 using Microsoft.AspNetCore.Mvc;
+using AutoMapper;
+using FitnessWeb_API.Models;
+using FitnessWeb_API.Repositories.IRepositories;
 
 namespace FitnessWeb_API.Controllers 
 {
@@ -13,19 +14,21 @@ namespace FitnessWeb_API.Controllers
     [Route("api/[controller]")]
     public class CompetitionsController : Controller 
     {
-        private readonly ICompetitionService _competitionService;
+        private readonly IRepositoryWrapper _repository;
+        private readonly IMapper _mapper;
 
-        public CompetitionsController(ICompetitionService competitionService)
+        public CompetitionsController(IMapper mapper, IRepositoryWrapper repositoryWrapper)
         {
-            _competitionService = competitionService;
+            _mapper = mapper;
+            _repository = repositoryWrapper;
         }
 
+        // /api/competitions
         [HttpGet]
-        public async Task<IEnumerable<Varzybos>> GetAllAsync()
+        public ActionResult<IEnumerable<Varzybos>> GetAllCompetitions()
         {
-            var competitions = await _competitionService.ListAsync();
-
-            return competitions;
+            var competitions = _repository.Competition.FindAll();
+            return Ok(competitions);
         }
     } 
 }

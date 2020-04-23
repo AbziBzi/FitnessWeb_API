@@ -1,16 +1,17 @@
 ﻿using System;
+using FitnessWeb_API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace FitnessWeb_API.Models
+namespace FitnessWeb_API.Repositories
 {
-    public partial class fitnesswebContext : DbContext
+    public partial class AppDbContext : DbContext
     {
-        public fitnesswebContext()
+        public AppDbContext()
         {
         }
 
-        public fitnesswebContext(DbContextOptions<fitnesswebContext> options)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
         }
@@ -29,10 +30,10 @@ namespace FitnessWeb_API.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseMySql("server=localhost;port=3306;user=root;database=fitnessweb", x => x.ServerVersion("10.4.11-mariadb"));
-            }
+            // if (!optionsBuilder.IsConfigured)
+            // {
+            //     optionsBuilder.UseMySql("server=localhost;userid=root;database=fitnessweb", x => x.ServerVersion("10.4.11-mariadb"));
+            // }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -235,7 +236,8 @@ namespace FitnessWeb_API.Models
 
                 entity.Property(e => e.IdNaudotojas)
                     .HasColumnName("id_Naudotojas")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("int(11)")
+                    .ValueGeneratedOnAdd();
 
                 entity.Property(e => e.AtliktuPratymuSkaicius)
                     .HasColumnName("atliktu_pratymu_skaicius")
@@ -348,7 +350,8 @@ namespace FitnessWeb_API.Models
 
                 entity.Property(e => e.IdNaudotojas)
                     .HasColumnName("id_Naudotojas")
-                    .HasColumnType("int(11)");
+                    .HasColumnType("int(11)")
+                    .ValueGeneratedOnAdd();
 
                 entity.HasOne(d => d.IdNaudotojasNavigation)
                     .WithOne(p => p.Treneris)
