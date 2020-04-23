@@ -23,13 +23,18 @@ namespace FitnessWeb_API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            services.AddAutoMapper(typeof(Startup));
+
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseMySql(Configuration["ConnectionStrings:DefaultConnection"]));
 
-            services.AddAutoMapper(typeof(Startup));
             services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

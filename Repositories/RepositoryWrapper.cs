@@ -5,7 +5,7 @@ namespace FitnessWeb_API.Repositories
     public class RepositoryWrapper : IRepositoryWrapper
     {
         private AppDbContext _context;
-        private ICompetitionRepository _competition;
+        private CompetitionRepository _competition;
 
         public RepositoryWrapper(AppDbContext repositoryContext)
         {
@@ -16,7 +16,7 @@ namespace FitnessWeb_API.Repositories
         {
             _context.SaveChanges();
         }
-        public ICompetitionRepository Competition {
+        public CompetitionRepository Competition {
             get {
                 if(_competition == null)
                     _competition = new CompetitionRepository(_context);

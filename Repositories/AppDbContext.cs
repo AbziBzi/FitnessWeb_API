@@ -1,4 +1,5 @@
 ﻿using System;
+using AutoMapper;
 using FitnessWeb_API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -11,11 +12,13 @@ namespace FitnessWeb_API.Repositories
         {
         }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options)
+        public AppDbContext(DbContextOptions<AppDbContext> options, IMapper mapper)
             : base(options)
         {
+            Mapper = mapper;
         }
-
+        
+        public readonly IMapper Mapper;
         public virtual DbSet<AtliekamasPratimas> AtliekamasPratimas { get; set; }
         public virtual DbSet<Naudotojas> Naudotojas { get; set; }
         public virtual DbSet<Pratimas> Pratimas { get; set; }
