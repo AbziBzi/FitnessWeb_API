@@ -28,7 +28,44 @@ namespace FitnessWeb_API.Controllers
         public ActionResult<IEnumerable<Varzybos>> GetAllCompetitions()
         {
             var competitions = _repository.Competition.FindAll();
+            
             return Ok(competitions);
+        }
+
+        // /api/competitions/{id}
+        [HttpGet("{id}")]
+        public ActionResult<Varzybos> GetCompetitionById(int id)
+        {
+            var competition = _repository.Competition.FindByCondition(c => c.IdVarzybos.Equals(id)).FirstOrDefault();
+            if(competition == null)
+                return NotFound("Competition not found");
+
+            return Ok(competition);
+        }
+
+        // /api/competitions
+        // [HttpPost]
+        // public IActionResult<Varzybos> CreateCompetition([FromBody] Varzybos)
+
+        // /api/competitions/{id}
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCompetition(int id)
+        {
+            try 
+            {
+                var competition = _repository.Competition.FindByCondition(c => c.IdVarzybos.Equals(id)).FirstOrDefault();
+                if(competition == null)
+                    return NotFound("Competition not found");
+                
+                _repository.Competition.Delete(competition);
+                _repository.Save();
+                
+                return Ok(); 
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, $"Internal server error:\n{ex.Message}");
+            }
         }
     } 
 }
