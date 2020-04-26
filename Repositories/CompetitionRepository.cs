@@ -52,6 +52,8 @@ namespace FitnessWeb_API.Repositories
         public Varzybos Create(CompetitionCreateModel entity)
         {
             var competition = _repository.Mapper.Map<CompetitionCreateModel, Varzybos>(entity);
+            if (competition.FkNaudotojasId == default)
+                competition.FkNaudotojasId = 1;
             _repository.Set<Varzybos>().Add(competition);
             _repository.SaveChanges();
 
