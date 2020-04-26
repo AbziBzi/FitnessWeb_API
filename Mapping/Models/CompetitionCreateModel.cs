@@ -16,7 +16,6 @@ namespace FitnessWeb_API.Mapping.Models
         public DateTime? PabaigosData { get; set; }
         [Required]
         public int IdVarzybos { get; set; }
-        [Required]
         public int FkNaudotojasId { get; set; }
     }
 }
