@@ -21,7 +21,7 @@ namespace FitnessWeb_API.Repositories
         /// Finds all Competitions in DB
         /// </summary>
         /// <returns>List of all competitions</returns>
-        public IQueryable<Varzybos> FindAll()
+        public IQueryable<Varzybos> GetAllCompetitions()
         {
                 return _repository.Set<Varzybos>()
                 .Include(o => o.FkNaudotojas)       // Includes competition owner
@@ -35,7 +35,7 @@ namespace FitnessWeb_API.Repositories
         /// </summary>
         /// <param name="expression"></param>
         /// <returns>One or more competitions</returns>
-        public IQueryable<Varzybos> FindByCondition(Expression<Func<Varzybos, bool>> expression)
+        public IQueryable<Varzybos> GetCompetition(Expression<Func<Varzybos, bool>> expression)
         {
             return _repository.Set<Varzybos>().Where(expression)
                 .Include(o => o.FkNaudotojas)       // Includes competition owner
@@ -49,7 +49,7 @@ namespace FitnessWeb_API.Repositories
         /// </summary>
         /// <param name="entity">Competition DTO</param>
         /// <returns>Competition</returns>
-        public Varzybos Create(CompetitionCreateModel entity)
+        public Varzybos CreateCompetition(CompetitionCreateModel entity)
         {
             var competition = _repository.Mapper.Map<CompetitionCreateModel, Varzybos>(entity);
             if (competition.FkNaudotojasId == default)
@@ -62,7 +62,7 @@ namespace FitnessWeb_API.Repositories
             // After creating competition add creator to participants
         }
 
-        public Varzybos Update(CompetitionUpdateModel entity, int id)
+        public Varzybos UpdateCompetition(CompetitionUpdateModel entity, int id)
         {
             var foundCompetition = _repository.Set<Varzybos>().
                 FirstOrDefault(o => o.IdVarzybos.Equals(id));
@@ -80,7 +80,7 @@ namespace FitnessWeb_API.Repositories
             return foundCompetition;
         }
 
-        public void Delete(Varzybos entity)
+        public void DeleteCompetition(Varzybos entity)
         {   
             _repository.Set<Varzybos>().Remove(entity);
         }
