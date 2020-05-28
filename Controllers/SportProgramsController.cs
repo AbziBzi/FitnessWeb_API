@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using AutoMapper;
 using FitnessWeb_API.Mapping.Models;
 using FitnessWeb_API.Models;
@@ -30,6 +31,17 @@ namespace FitnessWeb_API.Controllers
                 mappedSportPrograms.Add(_mapper.Map<SportoPrograma, SportProgramGetModel>(program));
 
             return Ok(mappedSportPrograms);
+        }
+
+        // api/sportPrograms/{id}
+        [HttpGet("{id}")]
+        public ActionResult<SportProgramGetModel> GetSportProgram(int id)
+        {
+            var sportProgram = _repository.SportProgram
+                .GetSportProgram(c => c.IdSportoPrograma.Equals(id)).FirstOrDefault();
+            if (sportProgram == null)
+                return NotFound("Sport Program not found");
+            return Ok(_mapper.Map<SportoPrograma, SportProgramGetModel>(sportProgram));
         }
     }
 }
