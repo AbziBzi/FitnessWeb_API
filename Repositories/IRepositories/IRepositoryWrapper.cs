@@ -5,6 +5,8 @@ namespace FitnessWeb_API.Repositories.IRepositories
          CompetitionRepository Competition { get; }
          UserRepository User { get; }
          CompetitorRepository Competitor { get; }
+
+         SportProgramRepository SportProgram { get; }
          void Save();
     }
 }
