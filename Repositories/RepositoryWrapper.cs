@@ -9,6 +9,7 @@ namespace FitnessWeb_API.Repositories
         private UserRepository _user;
         private CompetitorRepository _competitor;
         private SportProgramRepository _sportProgram;
+        private PerformingExercisesRepository _performingExercises;
 
         public RepositoryWrapper(AppDbContext repositoryContext)
         {
@@ -56,6 +57,16 @@ namespace FitnessWeb_API.Repositories
                 if (_sportProgram == null)
                     _sportProgram = new SportProgramRepository(_context);
                 return _sportProgram;
+            }
+        }
+
+        public PerformingExercisesRepository PerformingExercises
+        {
+            get 
+            {
+                if (_performingExercises == null)
+                    _performingExercises = new PerformingExercisesRepository(_context);
+                return _performingExercises;
             }
         }
     }

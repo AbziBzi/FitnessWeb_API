@@ -58,8 +58,6 @@ namespace FitnessWeb_API.Repositories
             _repository.SaveChanges();
 
             return competition;
-            // TO DO
-            // After creating competition add creator to participants
         }
 
         public Varzybos UpdateCompetition(CompetitionUpdateModel entity, int id)

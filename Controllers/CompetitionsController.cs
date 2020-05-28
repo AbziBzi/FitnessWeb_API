@@ -47,10 +47,6 @@ namespace FitnessWeb_API.Controllers
             return Ok(_mapper.Map<Varzybos, CompetitionGetModel>(competition));
         }
 
-        // /api/competitions
-        // [HttpPost]
-        // public IActionResult<Varzybos> CreateCompetition([FromBody] Varzybos)
-
         // /api/competitions/{id}
         [HttpDelete("{id}")]
         public ActionResult DeleteCompetition(int id)
@@ -124,14 +120,14 @@ namespace FitnessWeb_API.Controllers
         [HttpPut("join/{competitionid}/{userId}")]
         public ActionResult<CompetitionGetModel> JoinCompetition(int competitionId, int userId)
         {
-            var user = _repository.User.GetUser(c => c.IdNaudotojas.Equals(userId)).FirstOrDefault();
+            var user = _repository.User.GetUser(c => c.IdNaudotojas.Equals(2)).FirstOrDefault();
             if (user == null)
                 return NotFound("User not Found");
             var competition = _repository.Competition.GetCompetition(c => c.IdVarzybos.Equals(competitionId)).FirstOrDefault();
             if (competition == null)
                 return NotFound("Competition not found");
 
-            var newCompetitor = _repository.Competitor.CreateCompetitor(userId, competitionId);
+            var newCompetitor = _repository.Competitor.CreateCompetitor(2, competitionId);
             if (newCompetitor == null)
                 return BadRequest("User is already participating in competition");
 

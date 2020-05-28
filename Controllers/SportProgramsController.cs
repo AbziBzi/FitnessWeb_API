@@ -10,7 +10,7 @@ namespace FitnessWeb_API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class SportProgramsController :Controller
+    public class SportProgramsController : Controller
     {
         private readonly IRepositoryWrapper _repository;
         private readonly IMapper _mapper;

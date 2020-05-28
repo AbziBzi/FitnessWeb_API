@@ -24,6 +24,7 @@ namespace FitnessWeb_API.Repositories
 
         public VarzybuDalyvis CreateCompetitor(int userId, int competitionId)
         {
+            userId = 2;
             var foundCompetition = _repository.Set<Varzybos>().
                 FirstOrDefault(o => o.IdVarzybos.Equals(competitionId));
             if(foundCompetition == null)
