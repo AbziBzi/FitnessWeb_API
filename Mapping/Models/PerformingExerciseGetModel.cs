@@ -1,4 +1,5 @@
 using System;
+using FitnessWeb_API.Models;
 
 namespace FitnessWeb_API.Mapping.Models
 {

@@ -5,6 +5,6 @@ namespace FitnessWeb_API.Mapping.Models
 {
     public class CoachGetModel
     {
-        public virtual UserGetForCompetitionModel IdNaudotojasNavigation { get; set; }
+        public virtual Naudotojas Naudotojas { get; set; }
     }
 }

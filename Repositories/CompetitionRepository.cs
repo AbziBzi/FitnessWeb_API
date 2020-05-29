@@ -62,17 +62,17 @@ namespace FitnessWeb_API.Repositories
 
         public Varzybos UpdateCompetition(CompetitionUpdateModel entity, int id)
         {
-            var foundCompetition = _repository.Set<Varzybos>().
-                FirstOrDefault(o => o.IdVarzybos.Equals(id));
+            var foundCompetition = _repository.Set<Varzybos>()
+                .FirstOrDefault(o => o.IdVarzybos.Equals(id));
 
             if(foundCompetition == null)
                 return null;
 
-            foundCompetition.PrasidejimoData = entity.PrasidejimoData;
-            foundCompetition.Pavadinimas = entity.Pavadinimas;
-            foundCompetition.Aprasas = entity.Aprasas;
-            foundCompetition.PabaigosData = entity.PabaigosData;
-            foundCompetition.Vieta = entity.Vieta;
+            foundCompetition.PrasidejimoData = (entity.PrasidejimoData != null) ? entity.PrasidejimoData : foundCompetition.PrasidejimoData;
+            foundCompetition.Pavadinimas = (entity.Pavadinimas != null) ? entity.Pavadinimas : foundCompetition.Pavadinimas;
+            foundCompetition.Aprasas = (entity.Aprasas != null) ? entity.Aprasas : foundCompetition.Aprasas;
+            foundCompetition.PabaigosData = (entity.PabaigosData != null) ? entity.PabaigosData : foundCompetition.PabaigosData;
+            foundCompetition.Vieta = (entity.Vieta != null) ? entity.Vieta : foundCompetition.Vieta;
             
             _repository.SaveChanges();
             return foundCompetition;

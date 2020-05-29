@@ -8,7 +8,15 @@ namespace FitnessWeb_API.Mapping.Profiles
     {
         public PerformingExerciseProfile()
         {
-            CreateMap<AtliekamasPratimas, PerformingExerciseGetModel>();
+            CreateMap<AtliekamasPratimas, PerformingExerciseGetModel>()
+                .ForMember(dest => dest.FkPratimas, 
+                    opt => opt.MapFrom(src => src.FkPratimas))
+                .ForMember(dest => dest.FkTreneris, 
+                    opt => opt.MapFrom(src => src.FkTreneris));
+            CreateMap<Treneris, CoachGetModel>()
+                .ForMember(dest => dest.Naudotojas,
+                    opt => opt.MapFrom(src => src.IdNaudotojasNavigation));
+            CreateMap<Naudotojas, UserGetForCompetitionModel>();
         }
     }
 }

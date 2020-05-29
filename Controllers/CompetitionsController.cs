@@ -108,7 +108,7 @@ namespace FitnessWeb_API.Controllers
                 var changed = _repository.Competition.UpdateCompetition(competition, id);
                 if (changed == null)
                     return BadRequest("Competition with given ID not found");
-                return Ok(competition);
+                return Ok(changed);
             }
             catch (Exception ex)
             {
