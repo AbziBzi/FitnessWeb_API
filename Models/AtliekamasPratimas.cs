@@ -10,7 +10,7 @@ namespace FitnessWeb_API.Models
         public string VaizdoIrasasUrl { get; set; }
         public DateTime? IvertinimoData { get; set; }
         public int IdAtliekamasPratimas { get; set; }
-        public int FkTrenerisId { get; set; }
+        public int? FkTrenerisId { get; set; }
         public int FkSportininkasId { get; set; }
         public int FkPratimasId { get; set; }
 

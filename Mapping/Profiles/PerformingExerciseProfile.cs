@@ -13,10 +13,8 @@ namespace FitnessWeb_API.Mapping.Profiles
                     opt => opt.MapFrom(src => src.FkPratimas))
                 .ForMember(dest => dest.FkTreneris, 
                     opt => opt.MapFrom(src => src.FkTreneris));
-            CreateMap<Treneris, CoachGetModel>()
-                .ForMember(dest => dest.Naudotojas,
-                    opt => opt.MapFrom(src => src.IdNaudotojasNavigation));
-            CreateMap<Naudotojas, UserGetForCompetitionModel>();
+            CreateMap<AtliekamasPratimas, PerformingExerciseCreateModel>();
+            CreateMap<PerformingExerciseCreateModel, AtliekamasPratimas>();
         }
     }
 }

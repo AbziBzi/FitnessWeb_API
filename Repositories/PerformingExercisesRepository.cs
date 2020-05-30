@@ -61,5 +61,19 @@ namespace FitnessWeb_API.Repositories
                     .ThenInclude(o => o.IdNaudotojasNavigation)
                 .AsNoTracking();
         }
+
+        public AtliekamasPratimas CreatePerformingExercise(PerformingExerciseCreateModel entity)
+        {
+            var exercise = _repository.Mapper.Map<PerformingExerciseCreateModel, AtliekamasPratimas>(entity);
+            exercise.FkSportininkasId = 1;
+            int includedExerciseId = entity.FkPratimasId;
+            var includedExercise = _repository.Set<Pratimas>().Where(o => o.IdPratimas.Equals(includedExerciseId)).FirstOrDefault();
+            if (includedExercise == null)
+                return null;
+            _repository.Set<AtliekamasPratimas>().Add(exercise);
+            _repository.SaveChanges();
+
+            return GetExercise(o => o.IdAtliekamasPratimas.Equals(exercise.IdAtliekamasPratimas)).FirstOrDefault();
+        }
     }
 }

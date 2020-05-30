@@ -73,6 +73,7 @@ namespace FitnessWeb_API.Controllers
             return Ok();
         }
 
+        // api/exercises
         [HttpGet]
         public ActionResult<IEnumerable<PerformingExerciseGetModel>> GetAllExercises()
         {
@@ -82,6 +83,21 @@ namespace FitnessWeb_API.Controllers
                 mappedExercises.Add(_mapper.Map<AtliekamasPratimas, PerformingExerciseGetModel>(exercise));
             
             return Ok(mappedExercises);
+        }
+
+        // api/exercises
+        [HttpPost]
+        public ActionResult<PerformingExerciseGetModel> CreatePerformingExercise([FromBody] PerformingExerciseCreateModel exercise)
+        {
+            if (exercise == null)
+                return BadRequest("PerformingExercise object is null");
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid PerformingExercise data");
+            
+            var savedExercise = _repository.PerformingExercises.CreatePerformingExercise(exercise);
+            if (savedExercise == null)
+                return BadRequest("PerformingExercise could not be saved");
+            return Ok(_mapper.Map<AtliekamasPratimas, PerformingExerciseGetModel>(savedExercise));
         }
     }
 }
