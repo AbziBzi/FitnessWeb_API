@@ -45,5 +45,21 @@ namespace FitnessWeb_API.Repositories
             _repository.SaveChanges();
             return foundExercise;
         }
+
+        public void DeleteExercise(AtliekamasPratimas entity)
+        {
+            _repository.Set<AtliekamasPratimas>().Remove(entity);
+            _repository.SaveChanges();
+        }
+
+        public IQueryable<AtliekamasPratimas> GetExercises()
+        {
+            return _repository.Set<AtliekamasPratimas>()
+                .Where(O => O.Ivertinimas == null && O.VaizdoIrasasUrl != null)
+                .Include(o => o.FkPratimas)
+                .Include(o => o.FkTreneris)
+                    .ThenInclude(o => o.IdNaudotojasNavigation)
+                .AsNoTracking();
+        }
     }
 }

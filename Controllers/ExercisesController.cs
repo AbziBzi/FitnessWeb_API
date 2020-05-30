@@ -60,5 +60,28 @@ namespace FitnessWeb_API.Controllers
             
             return Ok(_mapper.Map<AtliekamasPratimas, PerformingExerciseGetModel>(exercise));
         }
+
+        // api/exercises/{id}
+        [HttpDelete("{id}")]
+        public ActionResult DeleteExercise(int id)
+        {
+            var performedExercise = _repository.PerformingExercises.GetExercise(c => c.IdAtliekamasPratimas.Equals(id)).FirstOrDefault();
+            if (performedExercise == null)
+                return NotFound("PerformedExercise not found");
+            _repository.PerformingExercises.DeleteExercise(performedExercise);
+
+            return Ok();
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<PerformingExerciseGetModel>> GetAllExercises()
+        {
+            var exercises = _repository.PerformingExercises.GetExercises();
+            var mappedExercises = new List<PerformingExerciseGetModel>();
+            foreach (var exercise in exercises)
+                mappedExercises.Add(_mapper.Map<AtliekamasPratimas, PerformingExerciseGetModel>(exercise));
+            
+            return Ok(mappedExercises);
+        }
     }
 }
