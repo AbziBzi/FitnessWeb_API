@@ -64,24 +64,31 @@ namespace FitnessWeb_API.Repositories
             program.Pavadinimas = (entity.Pavadinimas != null) ? entity.Pavadinimas : program.Pavadinimas;
             program.Aprasas = (entity.Aprasas != null) ? entity.Aprasas : program.Aprasas;
             program.NuotraukosUrl = (entity.NuotraukosUrl != null) ? entity.NuotraukosUrl : program.NuotraukosUrl;
-            if (entity.SportoProgramosPratimas != null)
+
+            if (entity.SportoProgramosPratimas != null || !entity.SportoProgramosPratimas.Any())
             {
-                foreach (var e in entity.SportoProgramosPratimas)
+                foreach (var exe in entity.SportoProgramosPratimas)
                 {
-                    var exercise = _repository.Mapper.Map<SportProgramExerciseUpdateModel, SportoProgramosPratimas>(e);
-                    program.SportoProgramosPratimas.Where(c => c.IdSportoProgramosPratimas.Equals(exercise.IdSportoProgramosPratimas))
-                        .ToList()
-                        .Select(c => {
-                            c.FkPratimasId = exercise.FkPratimasId;
-                            c.FkSportoProgramaId = exercise.FkSportoProgramaId;
-                            c.Setai = (exercise.Setai != null) ? exercise.Setai : c.Setai;
-                            c.Kartojimai = (exercise.Kartojimai != null) ? exercise.Kartojimai : c.Kartojimai;
-                            return c;
-                        });
+                    var newExercise = UpdateSportProgramExercise(exe.IdSportoProgramosPratimas, exe);
                 }
             }
+
             _repository.SaveChanges();
             return program;
+        }
+
+        public SportoProgramosPratimas UpdateSportProgramExercise(int id, SportProgramExerciseUpdateModel exercise)
+        {
+            var exe = _repository.Set<SportoProgramosPratimas>()
+                .FirstOrDefault(o => o.IdSportoProgramosPratimas.Equals(id));
+            if (exe == null)
+                return null;
+            exe.Setai = (exercise.Setai != null) ? exercise.Setai : exe.Setai;
+            exe.Kartojimai = (exercise.Kartojimai != null) ? exercise.Kartojimai : exe.Kartojimai;
+            exe.FkSportoProgramaId = (exercise.FkSportoProgramaId != null) ? exercise.FkSportoProgramaId : exe.FkSportoProgramaId;
+            exe.FkPratimasId = (exercise.FkPratimasId != null) ? exercise.FkPratimasId : exe.FkPratimasId;
+            _repository.SaveChanges();
+            return exe;
         }
 
         public SportoPrograma DeleteProgram(int id)
