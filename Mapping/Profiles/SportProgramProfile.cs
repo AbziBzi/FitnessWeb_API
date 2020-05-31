@@ -14,6 +14,14 @@ namespace FitnessWeb_API.Mapping.Profiles
                 .ForMember(dest => dest.SportoProgramosPratimas,
                     opt => opt.MapFrom(src => src.SportoProgramosPratimas));
             CreateMap<Treneris, CoachGetModel>();
+            CreateMap<SportoPrograma, SportProgramCreateModel>();
+            CreateMap<SportProgramCreateModel, SportoPrograma>();
+            CreateMap<SportoPrograma, SportProgramUpdateModel>();
+            CreateMap<SportProgramUpdateModel, SportoPrograma>();
+            CreateMap<SportProgramExerciseCreateModel, SportoProgramosPratimas>();
+            CreateMap<SportoProgramosPratimas, SportProgramExerciseCreateModel>();
+            CreateMap<SportProgramExerciseUpdateModel, SportoProgramosPratimas>();
+            CreateMap<SportoProgramosPratimas, SportProgramExerciseUpdateModel>();
         }
     }
 }
