@@ -99,5 +99,53 @@ namespace FitnessWeb_API.Controllers
                 return BadRequest("PerformingExercise could not be saved");
             return Ok(_mapper.Map<AtliekamasPratimas, PerformingExerciseGetModel>(savedExercise));
         }
+
+        // api/exercises/rating/{exerciseID}
+        [HttpGet("rating/{id}")]
+        public ActionResult<PerformedExerciseRatingGetModel> GetRating(int id)
+        {
+            var rating = _repository.PerformingExercises.CheckRating(id);
+            if (rating == null)
+                return NotFound("Rating not found");
+            return Ok(rating);
+        }
+
+        // api/exercises/rating/{exerciseID}
+        [HttpPut("rating/insert/{id}")]
+        public ActionResult<PerformingExerciseGetModel> InsertRating(int id, [FromBody]PerformedExerciseRatingCreateModel rating)
+        {
+            if (rating == null)
+                return BadRequest("Rating data is null");
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid Rating data");
+            var updatedExercise = _repository.PerformingExercises.InsertRating(id, rating);
+            if (updatedExercise == null)
+                return BadRequest("Rating could not be created");
+            return Ok(_mapper.Map<AtliekamasPratimas, PerformingExerciseGetModel>(updatedExercise));
+        }
+
+        // api/exercises/rating/{exerciseID}
+        [HttpPut("rating/update/{id}")]
+        public ActionResult<PerformingExerciseGetModel> UpdateRating(int id, [FromBody]PerformedExerciseRatingCreateModel rating)
+        {
+            if (rating == null)
+                return BadRequest("Rating data is null");
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid Rating data");
+            var updatedExercise = _repository.PerformingExercises.UpdateRating(id, rating);
+            if (updatedExercise == null)
+                return BadRequest("Rating could not be created");
+            return Ok(_mapper.Map<AtliekamasPratimas, PerformingExerciseGetModel>(updatedExercise));
+        }
+
+        // api/exercise/rating/delete/{exerciseID}
+        [HttpPut("rating/delete/{id}")]
+        public ActionResult<PerformingExerciseGetModel> DeleteRating(int id)
+        {
+            var updatedExercise = _repository.PerformingExercises.DeleteRating(id);
+            if (updatedExercise == null)
+                return BadRequest("Rating could not be created");
+            return Ok(_mapper.Map<AtliekamasPratimas, PerformingExerciseGetModel>(updatedExercise));
+        }
     }
 }

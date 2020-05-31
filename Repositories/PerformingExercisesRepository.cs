@@ -73,7 +73,63 @@ namespace FitnessWeb_API.Repositories
             _repository.Set<AtliekamasPratimas>().Add(exercise);
             _repository.SaveChanges();
 
-            return GetExercise(o => o.IdAtliekamasPratimas.Equals(exercise.IdAtliekamasPratimas)).FirstOrDefault();
+            return exercise;
+        }
+
+        public PerformedExerciseRatingGetModel CheckRating(int id)
+        {
+            var exercise = GetExercise(o => o.IdAtliekamasPratimas.Equals(id))
+                .Include(o => o.FkTreneris)
+                    .ThenInclude(o => o.IdNaudotojasNavigation)
+                .FirstOrDefault();
+            if (exercise.Ivertinimas == null)
+                return null;
+            return _repository.Mapper.Map<AtliekamasPratimas, PerformedExerciseRatingGetModel>(exercise);
+        }
+
+        public AtliekamasPratimas InsertRating(int id, PerformedExerciseRatingCreateModel rating)
+        {
+            var exercise = _repository.Set<AtliekamasPratimas>()
+                .FirstOrDefault(o => o.IdAtliekamasPratimas.Equals(id));
+            if (exercise == null)
+                return null;
+
+            exercise.Ivertinimas = (rating.Ivertinimas != null) ? rating.Ivertinimas : exercise.Ivertinimas;
+            exercise.IvertinimoData = (rating.Ivertinimas != null) ? DateTime.Now : exercise.IvertinimoData;
+            exercise.FkTrenerisId = (rating.FkTrenerisId != null) ? rating.FkTrenerisId : exercise.FkTrenerisId;
+
+            _repository.SaveChanges();
+            return exercise;
+        }
+
+        public AtliekamasPratimas UpdateRating(int id, PerformedExerciseRatingCreateModel rating)
+        {
+            var exercise = _repository.Set<AtliekamasPratimas>()
+                .FirstOrDefault(o => o.IdAtliekamasPratimas.Equals(id));
+            if (exercise == null)
+                return null;
+
+            exercise.Ivertinimas = (rating.Ivertinimas != null) ? rating.Ivertinimas : exercise.Ivertinimas;
+            exercise.IvertinimoData = (rating.Ivertinimas != null) ? DateTime.Now : exercise.IvertinimoData;
+            exercise.FkTrenerisId = (rating.FkTrenerisId != null) ? rating.FkTrenerisId : exercise.FkTrenerisId;
+
+            _repository.SaveChanges();
+            return exercise;
+        }
+
+        public AtliekamasPratimas DeleteRating(int id)
+        {
+            var exercise = _repository.Set<AtliekamasPratimas>()
+                .FirstOrDefault(o => o.IdAtliekamasPratimas.Equals(id));
+            if (exercise == null)
+                return null;
+
+            exercise.Ivertinimas = null;
+            exercise.IvertinimoData = null;
+            exercise.FkTrenerisId = null;
+
+            _repository.SaveChanges();
+            return exercise;
         }
     }
 }

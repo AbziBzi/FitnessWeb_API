@@ -15,6 +15,8 @@ namespace FitnessWeb_API.Mapping.Profiles
                     opt => opt.MapFrom(src => src.FkTreneris));
             CreateMap<AtliekamasPratimas, PerformingExerciseCreateModel>();
             CreateMap<PerformingExerciseCreateModel, AtliekamasPratimas>();
+            CreateMap<AtliekamasPratimas, PerformedExerciseRatingGetModel>();
+            CreateMap<AtliekamasPratimas, PerformedExerciseRatingCreateModel>();
         }
     }
 }
