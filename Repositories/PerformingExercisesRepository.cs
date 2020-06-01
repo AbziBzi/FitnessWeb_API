@@ -78,8 +78,10 @@ namespace FitnessWeb_API.Repositories
 
         public PerformedExerciseRatingGetModel CheckRating(int id)
         {
-            var exercise = GetExercise(o => o.IdAtliekamasPratimas.Equals(id))
-                .Include(o => o.FkTreneris)
+            var foundExercise = GetExercise(o => o.IdAtliekamasPratimas.Equals(id));
+            if (foundExercise.FirstOrDefault() == null)
+                return null;
+            var exercise = foundExercise.Include(o => o.FkTreneris)
                     .ThenInclude(o => o.IdNaudotojasNavigation)
                 .FirstOrDefault();
             if (exercise.Ivertinimas == null)

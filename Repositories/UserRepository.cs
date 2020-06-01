@@ -21,5 +21,12 @@ namespace FitnessWeb_API.Repositories
                               .Where(expression)
                               .AsNoTracking();
         }
+
+        public Naudotojas GetCurrentUser()
+        {
+            return _repository.Set<Naudotojas>()
+                .Where(c => c.IdNaudotojas.Equals(1))
+                .AsNoTracking().FirstOrDefault();
+        }
     }
 }

@@ -356,6 +356,10 @@ namespace FitnessWeb_API.Repositories
                     .HasColumnType("int(11)")
                     .ValueGeneratedOnAdd();
 
+                entity.Property(e => e.Kaina)
+                    .HasColumnName("kaina")
+                    .HasColumnType("double");
+
                 entity.HasOne(d => d.IdNaudotojasNavigation)
                     .WithOne(p => p.Treneris)
                     .HasForeignKey<Treneris>(d => d.IdNaudotojas)

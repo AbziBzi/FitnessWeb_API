@@ -106,7 +106,7 @@ namespace FitnessWeb_API.Controllers
         {
             var rating = _repository.PerformingExercises.CheckRating(id);
             if (rating == null)
-                return NotFound("Rating not found");
+                return NotFound("Rating or Exercise not found");
             return Ok(rating);
         }
 
