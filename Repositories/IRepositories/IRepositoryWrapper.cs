@@ -8,6 +8,7 @@ namespace FitnessWeb_API.Repositories.IRepositories
 
          SportProgramRepository SportProgram { get; }
          PerformingExercisesRepository PerformingExercises { get; }
+         CoachRepository Coach { get; }
          void Save();
     }
 }

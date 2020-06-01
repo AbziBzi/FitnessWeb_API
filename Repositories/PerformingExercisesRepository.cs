@@ -43,7 +43,6 @@ namespace FitnessWeb_API.Repositories
                 .Include(o => o.FkTreneris)
                     .ThenInclude(o => o.IdNaudotojasNavigation)
                 .FirstOrDefault();
-            // var foundExercise = GetExercise(o => o.IdAtliekamasPratimas.Equals(id)).FirstOrDefault();
             if (foundExercise == null)
                 return null;
             
