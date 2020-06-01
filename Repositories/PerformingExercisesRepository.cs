@@ -37,7 +37,13 @@ namespace FitnessWeb_API.Repositories
 
         public AtliekamasPratimas UpdateExercise(int id, PerformingExerciseUpdateModel entity)
         {
-            var foundExercise = GetExercise(o => o.IdAtliekamasPratimas.Equals(id)).FirstOrDefault();
+            var foundExercise = _repository.Set<AtliekamasPratimas>()
+                .Where(o => o.IdAtliekamasPratimas.Equals(id))
+                .Include(o => o.FkPratimas)
+                .Include(o => o.FkTreneris)
+                    .ThenInclude(o => o.IdNaudotojasNavigation)
+                .FirstOrDefault();
+            // var foundExercise = GetExercise(o => o.IdAtliekamasPratimas.Equals(id)).FirstOrDefault();
             if (foundExercise == null)
                 return null;
             
