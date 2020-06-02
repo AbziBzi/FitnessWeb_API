@@ -443,7 +443,7 @@ namespace FitnessWeb_API.Repositories
                 entity.HasOne(d => d.FkVarzybos)
                     .WithMany(p => p.VarzybuDalyvis)
                     .HasForeignKey(d => d.FkVarzybosId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("turi2");
             });
 
