@@ -23,7 +23,7 @@ namespace FitnessWeb_API.Controllers
         }
 
         // /api/coaches/rekomended
-        [HttpGet("recomended")]
+        [HttpPost("recomended")]
         public ActionResult<IEnumerable<Treneris>> GetRecomendedCoaches([FromBody] PriceIntervalModel priceInterval)
         {
             if (priceInterval == null)
