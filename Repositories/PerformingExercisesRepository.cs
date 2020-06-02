@@ -45,7 +45,7 @@ namespace FitnessWeb_API.Repositories
                 .FirstOrDefault();
             if (foundExercise == null)
                 return null;
-            
+            foundExercise.FkPratimasId = (entity.FkPratimasId != null) ? entity.FkPratimasId : foundExercise.FkPratimasId;
             foundExercise.VaizdoIrasasUrl = (entity.VaizdoIrasasUrl != null) ? entity.VaizdoIrasasUrl : foundExercise.VaizdoIrasasUrl;
             _repository.SaveChanges();
             return foundExercise;
@@ -100,6 +100,7 @@ namespace FitnessWeb_API.Repositories
                 .FirstOrDefault(o => o.IdAtliekamasPratimas.Equals(id));
             if (exercise == null)
                 return null;
+            exercise.Kiekis = (rating.Kiekis != null) ? rating.Kiekis : exercise.Kiekis;
 
             exercise.Ivertinimas = (rating.Ivertinimas != null) ? rating.Ivertinimas : exercise.Ivertinimas;
             exercise.IvertinimoData = (rating.Ivertinimas != null) ? DateTime.Now : exercise.IvertinimoData;
@@ -130,7 +131,7 @@ namespace FitnessWeb_API.Repositories
                 .FirstOrDefault(o => o.IdAtliekamasPratimas.Equals(id));
             if (exercise == null)
                 return null;
-
+            exercise.Kiekis = 0;
             exercise.Ivertinimas = null;
             exercise.IvertinimoData = null;
             exercise.FkTrenerisId = null;

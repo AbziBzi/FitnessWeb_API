@@ -6,6 +6,7 @@ namespace FitnessWeb_API.Mapping.Models
     {
         [Required]
         public string VaizdoIrasasUrl { get; set; }
+        public int FkPratimasId { get; set; }
 
     }
 }
