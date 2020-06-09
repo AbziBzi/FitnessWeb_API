@@ -13,6 +13,7 @@ namespace FitnessWeb_API.Models
         }
 
         public int IdNaudotojas { get; set; }
+        public double Kaina { get; set; }
 
         public virtual Naudotojas IdNaudotojasNavigation { get; set; }
         public virtual ICollection<AtliekamasPratimas> AtliekamasPratimas { get; set; }

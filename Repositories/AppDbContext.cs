@@ -356,6 +356,10 @@ namespace FitnessWeb_API.Repositories
                     .HasColumnType("int(11)")
                     .ValueGeneratedOnAdd();
 
+                entity.Property(e => e.Kaina)
+                    .HasColumnName("kaina")
+                    .HasColumnType("double");
+
                 entity.HasOne(d => d.IdNaudotojasNavigation)
                     .WithOne(p => p.Treneris)
                     .HasForeignKey<Treneris>(d => d.IdNaudotojas)
@@ -439,7 +443,7 @@ namespace FitnessWeb_API.Repositories
                 entity.HasOne(d => d.FkVarzybos)
                     .WithMany(p => p.VarzybuDalyvis)
                     .HasForeignKey(d => d.FkVarzybosId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("turi2");
             });
 

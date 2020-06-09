@@ -28,7 +28,7 @@ namespace FitnessWeb_API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<CompetitionGetModel>> GetAllCompetitions()
         {
-            var competitions = _repository.Competition.FindAll();
+            var competitions = _repository.Competition.GetAllCompetitions();
             var mappedCompetitions = new List<CompetitionGetModel>();
             foreach (var competition in competitions)
                 mappedCompetitions.Add(_mapper.Map<Varzybos, CompetitionGetModel>(competition));
@@ -38,18 +38,14 @@ namespace FitnessWeb_API.Controllers
 
         // /api/competitions/{id}
         [HttpGet("{id}")]
-        public ActionResult<CompetitionGetModel> GetCompetitionById(int id)
+        public ActionResult<CompetitionGetModel> GetCompetition(int id)
         {
-            var competition = _repository.Competition.FindByCondition(c => c.IdVarzybos.Equals(id)).FirstOrDefault();
+            var competition = _repository.Competition.GetCompetition(c => c.IdVarzybos.Equals(id)).FirstOrDefault();
             if (competition == null)
                 return NotFound("Competition not found");
 
             return Ok(_mapper.Map<Varzybos, CompetitionGetModel>(competition));
         }
-
-        // /api/competitions
-        // [HttpPost]
-        // public IActionResult<Varzybos> CreateCompetition([FromBody] Varzybos)
 
         // /api/competitions/{id}
         [HttpDelete("{id}")]
@@ -57,11 +53,11 @@ namespace FitnessWeb_API.Controllers
         {
             try
             {
-                var competition = _repository.Competition.FindByCondition(c => c.IdVarzybos.Equals(id)).FirstOrDefault();
+                var competition = _repository.Competition.GetCompetition(c => c.IdVarzybos.Equals(id)).FirstOrDefault();
                 if (competition == null)
                     return NotFound("Competition not found");
 
-                _repository.Competition.Delete(competition);
+                _repository.Competition.DeleteCompetition(competition);
                 _repository.Save();
 
                 return Ok();
@@ -72,7 +68,7 @@ namespace FitnessWeb_API.Controllers
             }
         }
 
-        // /api/competition
+        // /api/competitions
         [HttpPost]
         public ActionResult<CompetitionGetModel> CreateCompetition([FromBody] CompetitionCreateModel competition)
         {
@@ -82,10 +78,15 @@ namespace FitnessWeb_API.Controllers
                     return BadRequest("Competition object is null");
                 if (!ModelState.IsValid)
                     return BadRequest("Invalid competition data");
-                var savedCompetition = _repository.Competition.Create(competition);
+                var savedCompetition = _repository.Competition.CreateCompetition(competition);
                 if (savedCompetition == null)
                     return BadRequest("Competition could not be saved");
-                return Ok(_mapper.Map<Varzybos, CompetitionGetModel>(savedCompetition));
+                var newCompetitor = _repository.Competitor.CreateCompetitor(savedCompetition.FkNaudotojasId, savedCompetition.IdVarzybos);
+                if (newCompetitor == null)
+                    return BadRequest("User is already participating in competition");
+
+                var finalCompetition = _repository.Competition.GetCompetition(c => c.IdVarzybos.Equals(savedCompetition.IdVarzybos)).FirstOrDefault();
+                return Ok(_mapper.Map<Varzybos, CompetitionGetModel>(finalCompetition));
             }
             catch (Exception ex)
             {
@@ -93,7 +94,7 @@ namespace FitnessWeb_API.Controllers
             }
         }
 
-        // api/competition/{id}
+        // api/competitions/{id}
         [HttpPut("{id}")]
         public ActionResult<CompetitionGetModel> UpdateCompetition(int id, [FromBody] CompetitionUpdateModel competition)
         {
@@ -104,15 +105,35 @@ namespace FitnessWeb_API.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest("Invalid model object");
 
-                var changed = _repository.Competition.Update(competition, id);
-                if(changed == null)
+                var changed = _repository.Competition.UpdateCompetition(competition, id);
+                if (changed == null)
                     return BadRequest("Competition with given ID not found");
-                return Ok(competition);
+                return Ok(changed);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error:\n{ex.Message}");
             }
+        }
+
+        // api/competitions/join/{competitionId}/{userId}
+        [HttpPut("join/{competitionid}/{userId}")]
+        public ActionResult<CompetitionGetModel> JoinCompetition(int competitionId, int userId)
+        {
+            var user = _repository.User.GetUser(c => c.IdNaudotojas.Equals(2)).FirstOrDefault();
+            if (user == null)
+                return NotFound("User not Found");
+            var competition = _repository.Competition.GetCompetition(c => c.IdVarzybos.Equals(competitionId)).FirstOrDefault();
+            if (competition == null)
+                return NotFound("Competition not found");
+
+            var newCompetitor = _repository.Competitor.CreateCompetitor(2, competitionId);
+            if (newCompetitor == null)
+                return BadRequest("User is already participating in competition");
+
+            competition = _repository.Competition.GetCompetition(c => c.IdVarzybos.Equals(competitionId)).FirstOrDefault();
+
+            return Ok(_mapper.Map<Varzybos, CompetitionGetModel>(competition));
         }
     }
 }
